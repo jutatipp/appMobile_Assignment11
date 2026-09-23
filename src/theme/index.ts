@@ -1,0 +1,62 @@
+import { StyleSheet } from 'react-native';
+
+export const colors = {
+  primary: '#185C4B',
+  dark: '#153E35',
+  accent: '#DCE8C8',
+  background: '#F7F8F2',
+  white: '#FFFFFF',
+  text: '#20372E',
+  muted: '#718078',
+  border: '#E3E8DE',
+  danger: '#AD3932',
+  warm: '#F4E9D5',
+};
+
+export const ui = StyleSheet.create({
+  page: { flex: 1, backgroundColor: colors.background },
+  content: {
+    padding: 22,
+    gap: 18,
+    paddingBottom: 36,
+    width: '100%',
+    maxWidth: 850,
+    alignSelf: 'center',
+  },
+  title: { fontSize: 28, fontWeight: '800', color: colors.text, lineHeight: 38 },
+  heading: { fontSize: 20, fontWeight: '700', color: colors.text },
+  body: { fontSize: 15, color: colors.text, lineHeight: 24 },
+  muted: { fontSize: 13, color: colors.muted, lineHeight: 21 },
+  label: { fontSize: 14, fontWeight: '600', color: colors.text, marginBottom: 8 },
+  input: {
+    minHeight: 52,
+    backgroundColor: colors.white,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: 14,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    fontSize: 16,
+    color: colors.text,
+  },
+  card: {
+    backgroundColor: colors.white,
+    borderRadius: 22,
+    padding: 20,
+    gap: 12,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  row: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  error: { color: colors.danger, fontSize: 13, lineHeight: 20 },
+  badge: {
+    color: colors.primary,
+    backgroundColor: '#EAF1E2',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 10,
+    fontSize: 12,
+    fontWeight: '600',
+    overflow: 'hidden',
+  },
+});

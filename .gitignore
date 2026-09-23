@@ -40,3 +40,10 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# Local credentials and mock API data
+.env
+.env.*
+!.env.example
+server/data/
+dist/

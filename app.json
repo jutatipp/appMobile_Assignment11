@@ -1,30 +1,64 @@
 {
   "expo": {
-    "name": "Nong Khai POI",
+    "name": "Nong Khai Explore",
     "slug": "appLocation_Maps",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/brand-icon.png",
     "userInterfaceStyle": "light",
-    "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.student.nongkhaiexplore"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/brand-icon.png",
+        "backgroundColor": "#185C4B"
       },
-      "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.student.nongkhaiexplore"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
-    }
+      "favicon": "./assets/brand-favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "expo-secure-store",
+      "expo-sqlite",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "เลือกรูปสำหรับกิจกรรมของคุณ",
+          "cameraPermission": "ถ่ายรูปประกอบกิจกรรมของคุณ",
+          "microphonePermission": false
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "ใช้ตำแหน่งเพื่อเลือกจุดนัดพบกิจกรรม"
+        }
+      ],
+      "expo-notifications",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "ถ่ายภาพเพื่อใช้แนะนำกิจกรรมของคุณ",
+          "recordAudioAndroid": false
+        }
+      ],
+      "expo-status-bar",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/brand-icon.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#F7F8F2",
+          "imageWidth": 160
+        }
+      ]
+    ],
+    "scheme": "nongkhai"
   }
 }
