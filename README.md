@@ -69,5 +69,3 @@ npm ci
 มีโค้ดครอบคลุมหัวข้อความรู้ Week 1–11 แต่ยังต้องทดสอบฟังก์ชันบนมือถือจริงและแนบหลักฐานก่อนส่ง แอปใช้บัญชีสาธิตและเน้นการใช้งานบนมือถือ
 
 [GitHub โปรเจกต์](https://github.com/jutatipp/appNong-Khai-Trip_Assignment11) · [GitHub กล้องต้นฉบับ](https://github.com/jutatipp/Photo_camera-_expo)
-
-โค้ดในเครื่องอาจใหม่กว่าบน GitHub หากยังไม่ได้ push
