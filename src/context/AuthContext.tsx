@@ -1,13 +1,13 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { AppState } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
-import { Session } from '../types/event';
+import { Session } from '../types/place';
 import { ApiError, checkSession, login, revokeSession } from '../services/api';
 
 type AuthState = {
   session: Session | null;
   ready: boolean;
-  signIn: (email: string, password: string) => Promise<void>;
+  signIn: (email: string, password: string, remember?: boolean) => Promise<void>;
   signOut: () => Promise<void>;
   expireSession: () => Promise<void>;
 };
@@ -65,9 +65,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, [session]);
 
-  async function signIn(email: string, password: string) {
-    const next = await login(email.trim(), password);
-    await SecureStore.setItemAsync(SESSION_KEY, JSON.stringify(next));
+  async function signIn(email: string, password: string, remember = true) {
+    const next = await login(email.trim().toLowerCase(), password);
+    if (remember) await SecureStore.setItemAsync(SESSION_KEY, JSON.stringify(next));
+    else await SecureStore.deleteItemAsync(SESSION_KEY);
     setSession(next);
   }
   async function expireSession() {

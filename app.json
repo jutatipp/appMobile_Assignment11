@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Nong Khai Explore",
-    "slug": "appLocation_Maps",
+    "name": "AppNong Khai Trip_Hybrid_Mobile",
+    "slug": "appnong-khai-trip-hybrid-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/brand-icon.png",
@@ -29,22 +29,22 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "เลือกรูปสำหรับกิจกรรมของคุณ",
-          "cameraPermission": "ถ่ายรูปประกอบกิจกรรมของคุณ",
+          "photosPermission": "เลือกรูปสำหรับทริปของคุณ",
+          "cameraPermission": "ถ่ายรูปประกอบทริปของคุณ",
           "microphonePermission": false
         }
       ],
       [
         "expo-location",
         {
-          "locationWhenInUsePermission": "ใช้ตำแหน่งเพื่อเลือกจุดนัดพบกิจกรรม"
+          "locationWhenInUsePermission": "ใช้ตำแหน่งเพื่อเลือกจุดนัดพบทริป"
         }
       ],
       "expo-notifications",
       [
         "expo-camera",
         {
-          "cameraPermission": "ถ่ายภาพเพื่อใช้แนะนำกิจกรรมของคุณ",
+          "cameraPermission": "ถ่ายภาพเพื่อใช้แนะนำทริปของคุณ",
           "recordAudioAndroid": false
         }
       ],
@@ -57,7 +57,16 @@
           "backgroundColor": "#F7F8F2",
           "imageWidth": 160
         }
-      ]
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "เปิดคลังภาพเพื่อเลือกภาพความทรงจำ",
+          "savePhotosPermission": "บันทึกภาพความทรงจำลงคลังภาพของคุณ",
+          "isAccessMediaLocationEnabled": false
+        }
+      ],
+      "@react-native-community/datetimepicker"
     ],
     "scheme": "nongkhai"
   }

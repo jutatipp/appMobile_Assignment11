@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SQLite from 'expo-sqlite';
-import { Event } from '../types/event';
-import { isEvent } from './api';
+import { Place } from '../types/place';
+import { isPlace } from './api';
 
 export async function readFavorites(): Promise<string[]> {
   try {
@@ -30,27 +30,27 @@ export async function readCache() {
     'SELECT value FROM metadata WHERE key = ?',
     'updatedAt',
   );
-  const events: Event[] = [];
+  const places: Place[] = [];
   for (const row of rows) {
     try {
       const value: unknown = JSON.parse(row.payload);
-      if (isEvent(value)) events.push(value);
+      if (isPlace(value)) places.push(value);
     } catch {
       /* ข้าม cache ที่เสีย */
     }
   }
-  return { events, updatedAt: meta?.value || null };
+  return { places, updatedAt: meta?.value || null };
 }
-export async function saveCache(events: Event[]) {
+export async function saveCache(places: Place[]) {
   const db = await database();
   const updatedAt = new Date().toISOString();
   await db.withTransactionAsync(async () => {
     await db.runAsync('DELETE FROM event_cache');
-    for (const event of events)
+    for (const place of places)
       await db.runAsync(
         'INSERT INTO event_cache (id, payload) VALUES (?, ?)',
-        event.id,
-        JSON.stringify(event),
+        place.id,
+        JSON.stringify(place),
       );
     await db.runAsync(
       'INSERT OR REPLACE INTO metadata (key, value) VALUES (?, ?)',

@@ -1,5 +1,5 @@
 import Constants from 'expo-constants';
-import { Event, EventDraft, Registration, Session } from '../types/event';
+import { Place, PlaceDraft, Session } from '../types/place';
 
 // Expo แสดง IP ของเครื่องที่เปิด Metro จึงใช้ API บนเครื่องเดียวกันได้ทันที
 const host = Constants.expoConfig?.hostUri?.split(':')[0];
@@ -14,7 +14,11 @@ export class ApiError extends Error {
   }
 }
 
-async function request(path: string, options: RequestInit = {}, token?: string): Promise<unknown> {
+export async function request(
+  path: string,
+  options: RequestInit = {},
+  token?: string,
+): Promise<unknown> {
   if (!API_URL) throw new Error('ยังไม่ได้ตั้ง EXPO_PUBLIC_API_URL กรุณาดูวิธีตั้งค่าใน README');
   const controller = new AbortController();
   const abort = () => controller.abort();
@@ -28,7 +32,7 @@ async function request(path: string, options: RequestInit = {}, token?: string):
       headers: {
         'Content-Type': 'application/json',
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        ...(__DEV__ && path === '/events' && process.env.EXPO_PUBLIC_TEST_FAULT
+        ...(__DEV__ && path === '/places' && process.env.EXPO_PUBLIC_TEST_FAULT
           ? { 'x-test-fault': process.env.EXPO_PUBLIC_TEST_FAULT }
           : {}),
       },
@@ -58,32 +62,28 @@ async function request(path: string, options: RequestInit = {}, token?: string):
   }
 }
 
-export function isEvent(value: unknown): value is Event {
+export function isPlace(value: unknown): value is Place {
   if (!value || typeof value !== 'object') return false;
   const e = value as Record<string, unknown>;
   return (
-    ['id', 'title', 'category', 'district', 'description', 'imageUrl', 'organizer'].every(
+    ['id', 'title', 'category', 'district', 'description', 'imageUrl', 'contributor'].every(
       (key) => typeof e[key] === 'string',
     ) &&
-    typeof e.startsAt === 'string' &&
-    Number.isFinite(Date.parse(e.startsAt)) &&
     typeof e.latitude === 'number' &&
     Math.abs(e.latitude) <= 90 &&
     typeof e.longitude === 'number' &&
-    Math.abs(e.longitude) <= 180 &&
-    typeof e.capacity === 'number' &&
-    e.capacity > 0
+    Math.abs(e.longitude) <= 180
   );
 }
-export async function getEvents(signal?: AbortSignal) {
-  const data = await request('/events', { signal });
-  if (!Array.isArray(data) || !data.every(isEvent))
-    throw new Error('รูปแบบรายการกิจกรรมจาก API ไม่ถูกต้อง');
+export async function getPlaces(signal?: AbortSignal) {
+  const data = await request('/places', { signal });
+  if (!Array.isArray(data) || !data.every(isPlace))
+    throw new Error('รูปแบบรายการสถานที่จาก API ไม่ถูกต้อง');
   return data;
 }
-export async function getEvent(id: string, signal?: AbortSignal) {
-  const data = await request(`/events/${encodeURIComponent(id)}`, { signal });
-  if (!isEvent(data)) throw new Error('รูปแบบรายละเอียดจาก API ไม่ถูกต้อง');
+export async function getPlace(id: string, signal?: AbortSignal) {
+  const data = await request(`/places/${encodeURIComponent(id)}`, { signal });
+  if (!isPlace(data)) throw new Error('รูปแบบรายละเอียดจาก API ไม่ถูกต้อง');
   return data;
 }
 export async function login(email: string, password: string) {
@@ -112,31 +112,8 @@ export async function checkSession(token: string) {
 export async function revokeSession(token: string) {
   await request('/auth/logout', { method: 'POST' }, token);
 }
-export async function registerEvent(
-  token: string,
-  eventId: string,
-  name: string,
-  email: string,
-  guests: number,
-) {
-  const data = await request(
-    '/registrations',
-    { method: 'POST', body: JSON.stringify({ eventId, name, email, guests }) },
-    token,
-  );
-  if (!data || typeof data !== 'object') throw new Error('ข้อมูลลงทะเบียนจาก API ไม่ถูกต้อง');
-  const registration = data as Record<string, unknown>;
-  if (
-    !['id', 'eventId', 'name', 'email'].every((key) => typeof registration[key] === 'string') ||
-    registration.eventId !== eventId ||
-    typeof registration.guests !== 'number'
-  ) {
-    throw new Error('ข้อมูลลงทะเบียนจาก API ไม่ถูกต้อง');
-  }
-  return data as Registration;
-}
-export async function createEvent(token: string, draft: EventDraft) {
-  const data = await request('/events', { method: 'POST', body: JSON.stringify(draft) }, token);
-  if (!isEvent(data)) throw new Error('ข้อมูลกิจกรรมใหม่ไม่ถูกต้อง');
+export async function createPlace(token: string, draft: PlaceDraft) {
+  const data = await request('/places', { method: 'POST', body: JSON.stringify(draft) }, token);
+  if (!isPlace(data)) throw new Error('ข้อมูลสถานที่ใหม่ไม่ถูกต้อง');
   return data;
 }

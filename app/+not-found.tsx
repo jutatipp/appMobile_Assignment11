@@ -7,7 +7,7 @@ export default function NotFound() {
     <View style={ui.page}>
       <EmptyState
         title="ไม่พบหน้าที่คุณกำลังหา"
-        description="ลิงก์อาจไม่ถูกต้อง กลับไปเลือกกิจกรรมใหม่ได้เลย"
+        description="ลิงก์อาจไม่ถูกต้อง กลับไปเลือกสถานที่ใหม่ได้เลย"
         action={<Button title="กลับหน้าสำรวจ" onPress={() => router.replace('/(tabs)/explore')} />}
       />
     </View>

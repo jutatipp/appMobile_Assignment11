@@ -1,4 +1,4 @@
-import { EventList } from '../../src/components/EventList';
+import { PlaceList } from '../../src/components/PlaceList';
 export default function Explore() {
-  return <EventList />;
+  return <PlaceList />;
 }

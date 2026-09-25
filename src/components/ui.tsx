@@ -27,9 +27,9 @@ export function Button({
       onPress={onPress}
       style={({ pressed }) => ({
         minHeight: 52,
-        borderRadius: 15,
+        borderRadius: 26,
         padding: 14,
-        backgroundColor: secondary ? '#EAF1E2' : colors.primary,
+        backgroundColor: secondary ? '#EBEDE5' : colors.accent,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -38,13 +38,13 @@ export function Button({
       })}
     >
       {loading ? (
-        <ActivityIndicator color={secondary ? colors.primary : 'white'} />
+        <ActivityIndicator color={colors.primary} />
       ) : icon ? (
-        <Ionicons name={icon} size={20} color={secondary ? colors.primary : 'white'} />
+        <Ionicons name={icon} size={20} color={colors.primary} />
       ) : null}
       <Text
         style={{
-          color: secondary ? colors.primary : 'white',
+          color: colors.primary,
           fontSize: 15,
           fontWeight: '700',
           flexShrink: 1,

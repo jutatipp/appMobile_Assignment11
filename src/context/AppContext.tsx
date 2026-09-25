@@ -1,8 +1,8 @@
 import { createContext, useContext, useEffect, useRef, useState, ReactNode } from 'react';
 import { Alert } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
-import { Event } from '../types/event';
-import { getEvents } from '../services/api';
+import { Place } from '../types/place';
+import { getPlaces } from '../services/api';
 import {
   readCache,
   readFavorites,
@@ -13,7 +13,7 @@ import {
 import { errorMessage } from '../utils/format';
 
 type AppState = {
-  events: Event[];
+  places: Place[];
   favorites: string[];
   ready: boolean;
   loading: boolean;
@@ -22,13 +22,13 @@ type AppState = {
   updatedAt: string | null;
   refresh: () => Promise<void>;
   toggleFavorite: (id: string) => Promise<void>;
-  addEvent: (event: Event) => Promise<void>;
+  addPlace: (place: Place) => Promise<void>;
   resetCache: () => Promise<void>;
 };
 const AppContext = createContext<AppState | null>(null);
 
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [events, setEvents] = useState<Event[]>([]);
+  const [places, setPlaces] = useState<Place[]>([]);
   const [favorites, setFavorites] = useState<string[]>([]);
   const [ready, setReady] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -45,9 +45,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setLoading(true);
     setError('');
     try {
-      const next = await getEvents(controller.signal);
+      const next = await getPlaces(controller.signal);
       if (controller.signal.aborted) return;
-      setEvents(next);
+      setPlaces(next);
       setUpdatedAt(await saveCache(next));
     } catch (err) {
       if (!controller.signal.aborted) setError(errorMessage(err));
@@ -65,7 +65,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       try {
         const [cache, saved] = await Promise.all([readCache(), readFavorites()]);
         if (!active) return;
-        setEvents(cache.events);
+        setPlaces(cache.places);
         setUpdatedAt(cache.updatedAt);
         setFavorites(saved);
       } catch (err) {
@@ -100,25 +100,25 @@ export function AppProvider({ children }: { children: ReactNode }) {
       favoriteBusy.current = false;
     }
   }
-  async function addEvent(event: Event) {
-    const next = [event, ...events.filter((item) => item.id !== event.id)];
-    setEvents(next);
+  async function addPlace(place: Place) {
+    const next = [place, ...places.filter((item) => item.id !== place.id)];
+    setPlaces(next);
     try {
       setUpdatedAt(await saveCache(next));
     } catch {
-      setError('สร้างกิจกรรมแล้ว แต่บันทึก cache ไม่สำเร็จ');
+      setError('สร้างสถานที่แล้ว แต่บันทึก cache ไม่สำเร็จ');
     }
   }
   async function resetCache() {
     await clearCache();
-    setEvents([]);
+    setPlaces([]);
     setUpdatedAt(null);
     await refresh();
   }
   return (
     <AppContext.Provider
       value={{
-        events,
+        places,
         favorites,
         ready,
         loading,
@@ -127,7 +127,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         updatedAt,
         refresh,
         toggleFavorite,
-        addEvent,
+        addPlace,
         resetCache,
       }}
     >

@@ -23,14 +23,14 @@ export function VenueMap({
       ref={ref}
       style={{ height: 235, width: '100%' }}
       initialRegion={{ ...coordinate, latitudeDelta: 0.035, longitudeDelta: 0.035 }}
-      onPress={onSelect ? (event) => onSelect(event.nativeEvent.coordinate) : undefined}
+      onPress={onSelect ? (place) => onSelect(place.nativeEvent.coordinate) : undefined}
     >
       <Marker
         coordinate={coordinate}
         title={title}
         pinColor="#185C4B"
         draggable={!!onSelect}
-        onDragEnd={(event) => onSelect?.(event.nativeEvent.coordinate)}
+        onDragEnd={(place) => onSelect?.(place.nativeEvent.coordinate)}
       />
     </MapView>
   );

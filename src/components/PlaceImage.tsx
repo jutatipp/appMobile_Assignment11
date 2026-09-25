@@ -3,7 +3,7 @@ import { Image, StyleProp, View, ViewStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme';
 
-export function EventImage({ uri, style }: { uri: string; style?: StyleProp<ViewStyle> }) {
+export function PlaceImage({ uri, style }: { uri: string; style?: StyleProp<ViewStyle> }) {
   const [failed, setFailed] = useState(false);
   useEffect(() => setFailed(false), [uri]);
   return (

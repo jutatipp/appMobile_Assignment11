@@ -49,7 +49,7 @@ export function CameraCapture({
         <View style={{ padding: 18, gap: 12 }}>
           <Text style={[ui.heading, { color: 'white' }]}>เก็บภาพบรรยากาศ</Text>
           <Text style={{ color: '#DCE8C8' }}>
-            ถ่ายภาพเพื่อใช้แนะนำกิจกรรม คุณดูตัวอย่างก่อนบันทึกได้
+            ถ่ายภาพเพื่อใช้แนะนำสถานที่ คุณดูตัวอย่างก่อนบันทึกได้
           </Text>
         </View>
         {permission?.granted ? (
@@ -67,7 +67,7 @@ export function CameraCapture({
         ) : (
           <View style={{ flex: 1, padding: 24, justifyContent: 'center', gap: 18 }}>
             <Text style={{ color: 'white', fontSize: 16 }}>
-              อนุญาตการใช้กล้องเพื่อถ่ายภาพกิจกรรม หรือกลับไปเลือกภาพจากคลังได้
+              อนุญาตการใช้กล้องเพื่อถ่ายภาพสถานที่ หรือกลับไปเลือกภาพจากคลังได้
             </Text>
             <Button
               title={permission?.canAskAgain === false ? 'เปิด Settings' : 'อนุญาตใช้กล้อง'}

@@ -1,15 +1,34 @@
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors } from '../../src/theme';
 
 export default function TabLayout() {
+  const insets = useSafeAreaInsets();
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.muted,
-        tabBarStyle: { backgroundColor: colors.white, borderTopColor: colors.border },
+        tabBarHideOnKeyboard: true,
+        tabBarActiveTintColor: colors.accent,
+        tabBarInactiveTintColor: '#A7ADA1',
+        tabBarStyle: {
+          position: 'absolute',
+          left: 20,
+          right: 20,
+          bottom: Math.max(insets.bottom, 12),
+          height: 66,
+          paddingTop: 9,
+          paddingBottom: 8,
+          borderRadius: 34,
+          backgroundColor: colors.dark,
+          borderTopWidth: 0,
+          shadowColor: '#000',
+          shadowOpacity: 0.16,
+          shadowRadius: 16,
+          shadowOffset: { width: 0, height: 6 },
+          elevation: 8,
+        },
         tabBarLabelStyle: { fontSize: 11, fontWeight: '600' },
       }}
     >
@@ -28,6 +47,15 @@ export default function TabLayout() {
           title: 'แผนที่',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="map-outline" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="trips"
+        options={{
+          title: 'ทริปของฉัน',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="briefcase-outline" color={color} size={size} />
           ),
         }}
       />

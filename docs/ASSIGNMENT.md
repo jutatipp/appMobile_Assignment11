@@ -1,41 +1,41 @@
-# ตารางเชื่อมโยง Assignment Week 1–11
+# ประยุกต์ Assignment Week 1–11 เป็น Nong Khai Trip
 
-แนวคิด: จากแผนที่สถานที่หนองคายเดิม พัฒนาเป็น “Nong Khai Explore” ที่แนะนำกิจกรรมตามสถานที่ ผู้ใช้เก็บรายการที่สนใจ ลงทะเบียน และตั้งเตือนได้ในแอปเดียว
+ขอบเขตที่ผู้ใช้เลือก: แอปแพลนทริปเที่ยวหนองคาย ใช้ธีมล่าสุด เพิ่มสถานที่เข้าทริป และเก็บภาพความทรงจำในแต่ละทริป กล้องใช้โค้ด Photo_camera-_expo ของผู้ใช้
 
-ตารางนี้อธิบายสิ่งที่ implement แล้ว ไม่ใช่การรับรองผลทดสอบมือถือทั้งหมด ดูสถานะการตรวจจริงใน TESTING.md
+บทเรียนต้นฉบับใช้ Campus Events; ตารางนี้อธิบายการประยุกต์เป็น Trip ไม่ได้อ้างว่าโครงสร้างธุรกิจเหมือน Lab ตรงตัว หรือผู้สอนรับรองการเปลี่ยนแล้ว
 
-| Week | นำมาใช้ในแอป                                                         | ไฟล์สำคัญ                                                                      | หลักฐานที่ควรบันทึก                                 |
-| ---- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------ | --------------------------------------------------- |
-| 1    | Expo SDK 57, TypeScript, โปรไฟล์, assets, README                     | `app/(tabs)/profile.tsx`, `package.json`                                       | เปิดแอปบน emulator/มือถือและหน้าโปรไฟล์             |
-| 2    | การ์ดรับ typed props, callback และ Favorite state                    | `src/components/EventCard.tsx`, `src/types/event.ts`                           | กดเปิดรายละเอียดและเปลี่ยน Favorite                 |
-| 3    | FlatList, 1/2 คอลัมน์ตามขนาดจอ, SafeArea, Loading/Empty/Error        | `src/components/EventList.tsx`, `src/components/ui.tsx`                        | หน้าจอสองขนาด ตัวอักษร 150% และสถานะต่าง ๆ          |
-| 4    | Tabs, Stack, dynamic ID, deep link, not found                        | `app/_layout.tsx`, `app/(tabs)/_layout.tsx`, `app/events/[id].tsx`             | Tabs → Detail → Back และ valid/invalid deep link    |
-| 5    | ค้นหาแบบ derived value, Context, validation, keyboard handling       | `src/context/AppContext.tsx`, `app/register.tsx`, `app/create.tsx`             | ฟอร์มผิด/ถูก กดซ้ำ และส่งไม่สำเร็จแล้วข้อมูลยังอยู่ |
-| 6    | GET list/detail, POST registration, แยก service, abort/timeout/Retry | `src/services/api.ts`, `server/index.mjs`                                      | Online, offline, error, slow, invalid response      |
-| 7    | AsyncStorage สำหรับ Favorite, SQLite สำหรับ cache จริง               | `src/services/storage.ts`                                                      | ปิดเน็ต รีสตาร์ต แล้วเปิดข้อมูลเก่า/Favorite        |
-| 8    | Login API, SecureStore, restore, protected screens, logout, expiry   | `src/context/AuthContext.tsx`, `app/login.tsx`, `server/index.mjs`             | Login → Register → Restart → Restore → Logout       |
-| 9    | ถ่ายภาพ/เลือกจากคลัง Preview/Replace/Remove และ upload จำลอง         | `src/components/CameraCapture.tsx`, `src/services/device.ts`, `app/create.tsx` | Granted, Denied, Canceled โดยฟอร์มยังอยู่           |
-| 10   | แผนที่ venue ไม่ขึ้นกับสิทธิ์ตำแหน่ง, current location, manual pin   | `src/components/VenueMap.tsx`, `app/(tabs)/map.tsx`, `app/create.tsx`          | venue map, current location, manual selection       |
-| 11   | Local reminder 30 นาที, cancel ID, Android channel, cold start       | `src/services/notifications.ts`, `src/components/NotificationObserver.tsx`     | schedule → receive → open detail และ invalid ID     |
+| Week / เปิดบทเรียน                                       | หัวข้อ                            | นำมาใส่ในระบบตรงไหน                                                          | เปิดดูโค้ด                                                                                                |
+| -------------------------------------------------------- | --------------------------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| [1](https://tanapattara.github.io/react_native/week-01)  | React Native, Expo, TypeScript    | ตั้งโปรเจกต์มือถือและหน้าโปรไฟล์                                             | [Profile](<../app/(tabs)/profile.tsx>)                                                                    |
+| [2](https://tanapattara.github.io/react_native/week-02)  | Components, Props, State, Events  | การ์ดสถานที่ ปุ่มหัวใจ และ callback เปลี่ยนรายการโปรด                        | [PlaceCard](../src/components/PlaceCard.tsx)                                                              |
+| [3](https://tanapattara.github.io/react_native/week-03)  | Styling และ Responsive UI         | ธีมกลาง รายการแบบ FlatList ปรับคอลัมน์ตามจอ และ Loading/Empty/Error          | [PlaceList](../src/components/PlaceList.tsx), [Theme](../src/theme/index.ts)                              |
+| [4](https://tanapattara.github.io/react_native/week-04)  | Expo Router และ Navigation        | Tabs/Stack หน้ารายละเอียดตาม ID และกลับไปทริปหลังล็อกอิน                     | [Layout](../app/_layout.tsx), [รายละเอียด](../app/places/[id].tsx)                                        |
+| [5](https://tanapattara.github.io/react_native/week-05)  | Forms และ State Management        | ฟอร์มชื่อ/วันไป–กลับ ตรวจช่วงเวลา แบ่งวันเที่ยว และกันบันทึกซ้ำ              | [ฟอร์มทริป](../app/trips/edit.tsx), [TripContext](../src/context/TripContext.tsx)                         |
+| [6](https://tanapattara.github.io/react_native/week-06)  | REST API และ Networking           | โหลดสถานที่ สร้าง/แก้ไข/ลบทริป ส่งภาพ ตรวจข้อมูลและจัดการ error              | [API client](../src/services/api.ts), [Server](../server/index.mjs)                                       |
+| [7](https://tanapattara.github.io/react_native/week-07)  | Local Storage และ Offline         | AsyncStorage เก็บรายการโปรด; SQLite เก็บ cache และคิวภาพรอส่ง                | [Storage](../src/services/storage.ts), [Trip storage](../src/services/tripStorage.ts)                     |
+| [8](https://tanapattara.github.io/react_native/week-08)  | Authentication และ Security       | Login, Remember Me, SecureStore, session หมดอายุ และ API ตรวจเจ้าของทริป     | [AuthContext](../src/context/AuthContext.tsx), [Login](../app/login.tsx)                                  |
+| [9](https://tanapattara.github.io/react_native/week-09)  | Camera, Image Picker, Permissions | ถ่าย/เลือกรูป ขอสิทธิ์ เลือกโทน preview บันทึกและส่งภาพของทริป               | [TripCamera](../src/components/TripCamera.tsx), [Memory photos](../src/services/memoryPhotos.ts)          |
+| [10](https://tanapattara.github.io/react_native/week-10) | Location และ Maps                 | ตำแหน่งปัจจุบัน หมุดสถานที่ แผนที่ทริปเต็มจอ และฟอร์มเลือกหมุด               | [Map](<../app/(tabs)/map.tsx>), [TripMap](../src/components/TripMap.tsx), [Create](../app/create.tsx)     |
+| [11](https://tanapattara.github.io/react_native/week-11) | Notifications และ Platform APIs   | เตือนเวลาเที่ยว ทดลองเตือน 10 วินาที ยกเลิก/ตั้งใหม่ และแตะแจ้งเตือนเปิดทริป | [Notifications](../src/services/notifications.ts), [Observer](../src/components/NotificationObserver.tsx) |
 
-## ขอบเขตกับโจทย์ตัวอย่าง
+## สิ่งที่นำมาประยุกต์
 
-บทเรียนใช้ Campus Events; โปรเจกต์นี้ประยุกต์เป็นกิจกรรมท่องเที่ยวชุมชน ฟอร์มลงทะเบียนและสร้างกิจกรรมอยู่ในเรื่องราวเดียวกับแผนที่เดิม
+- ฟอร์มลงทะเบียนกิจกรรม → ฟอร์มสร้างและจัดการทริป
+- Event API → Place/Trip API พร้อมตรวจเจ้าของและบันทึกภาพ
+- ภาพกิจกรรม → อัลบั้มความทรงจำภายในแต่ละทริป ไม่บังคับภาพปกก่อนสร้าง
+- เตือนก่อนกิจกรรม → เตือนเมื่อถึงเวลาเที่ยวแต่ละสถานที่
+- UI ภาพอ้างอิงใช้เป็นแนวทางภาพ/การ์ด/สี ไม่เพิ่มโรงแรม เที่ยวบิน ชำระเงิน หรือบริการจอง
 
-- SQLite ใช้เป็น cache จริง มากกว่า proof-of-concept อย่างเดียว
-- กล้องเริ่มจาก action ที่ผู้ใช้เลือก ไม่ขอ permissions ตั้งแต่เปิดแอป
-- API upload จำลองรับ data URL และเก็บภาพในข้อมูลกิจกรรมเพื่อความง่าย ไม่ได้ใช้บริการ object storage
-- Local notification ไม่ต้องมี push token; Remote Push และ biometrics เป็นงานต่อยอด ไม่ได้ implement
-- Development Build มี dependency/config และคู่มือ แต่ต้อง build/ติดตั้งจริงด้วยเครื่องหรือบัญชี Expo ของผู้ส่งงาน
-- ขั้นตอนส่ง repository จริงและหลักฐานมือถือยังต้องให้ผู้ส่งงานเติมข้อมูลของตนเอง
+## หลักฐานก่อนส่ง
 
-## รายการก่อนส่ง
+- [ ] ชื่อและรหัสผู้จัดทำจริง
+- [ ] Clone/install/run จาก commit ที่ส่งจริง
+- [ ] ภาพสองขนาดจอและ font scale 150%
+- [ ] วิดีโอเพิ่มสถานที่ → สร้าง/เลือกทริป → เรียงสถานที่ → ดูแผนที่
+- [ ] วิดีโอ Login/Logout/restore/expiry และการป้องกันทริป
+- [ ] วิดีโอ offline/restart และ Favorite/Trip/ภาพรอส่งยังอยู่
+- [ ] วิดีโอกล้อง/คลังภาพ/เปลี่ยนโทน/บันทึก ทั้งอนุญาต ปฏิเสธ และยกเลิก
+- [ ] วิดีโอแจ้งเตือน foreground/background/cold start และ ID ไม่ถูกต้อง
+- [ ] เปิด Development Build ตาม Lab 8 บนอุปกรณ์จริง
 
-- [ ] ระบุชื่อและรหัสนักศึกษาใน README/หน้าโปรไฟล์
-- [ ] Push repository พร้อม source code และ lockfile
-- [ ] ระบุ URL repository จริง และตั้งสิทธิ์ให้อาจารย์เข้าถึง
-- [ ] ทดลอง clone ใหม่ ติดตั้ง เปิด API และเปิดแอป
-- [ ] บันทึกภาพสองขนาดหน้าจอ และวิดีโอเส้นทางหลัก
-- [ ] บันทึกผลทดสอบสิทธิ์อุปกรณ์, offline และ notification
-- [ ] เปิด Development Build ด้วย `npm run dev-client` ให้ดูได้
-- [ ] อธิบาย flow, state ownership, storage และ permission diagrams ได้
+มีโค้ดครอบคลุมหัวข้อไม่เท่ากับผ่านการทดสอบบนมือถือครบ ดูสถานะใน TESTING.md

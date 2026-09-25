@@ -46,4 +46,3 @@ yarn-error.*
 .env.*
 !.env.example
 server/data/
-dist/

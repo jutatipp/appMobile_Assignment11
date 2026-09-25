@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 import * as Notifications from 'expo-notifications';
-import { Event } from '../types/event';
+import { Trip } from '../types/trip';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -10,44 +10,91 @@ Notifications.setNotificationHandler({
     shouldShowList: true,
   }),
 });
-const CHANNEL = 'event-reminders';
+const CHANNEL = 'trip-reminders';
 
-export async function scheduleReminder(event: Event, test = false) {
+export async function hasReminder(tripId: string) {
+  const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+  return scheduled.some(
+    (item) =>
+      item.identifier === `trip-${tripId}` || item.identifier.startsWith(`trip-${tripId}-stop-`),
+  );
+}
+export async function cancelReminder(tripId: string) {
+  const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+  for (const item of scheduled) {
+    if (item.identifier.startsWith(`trip-${tripId}-stop-`))
+      await Notifications.cancelScheduledNotificationAsync(item.identifier);
+  }
+  await Notifications.cancelScheduledNotificationAsync(`trip-${tripId}`);
+  await Notifications.cancelScheduledNotificationAsync(`trip-${tripId}-test`);
+}
+
+// เลิกใช้การเตือนกิจกรรมรุ่นเก่า ป้องกันแจ้งเตือนวันนัดหมายหลังอัปเดตแอป
+export async function clearLegacyReminders() {
+  const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+  for (const item of scheduled) {
+    if (item.identifier.startsWith('event-') || item.identifier.startsWith('place-'))
+      await Notifications.cancelScheduledNotificationAsync(item.identifier);
+  }
+}
+
+export async function scheduleStops(trip: Trip, titles: Record<string, string>) {
+  const upcoming = (trip.stopTimes || []).filter((stop) => Date.parse(stop.startsAt) > Date.now());
+  if (!upcoming.length) throw new Error('กำหนดเวลาเที่ยวในอนาคตอย่างน้อย 1 สถานที่ก่อนตั้งเตือน');
+  if (upcoming.length > 50) throw new Error('ตั้งเตือนได้สูงสุด 50 สถานที่ต่อทริป');
   if (Platform.OS === 'android')
     await Notifications.setNotificationChannelAsync(CHANNEL, {
-      name: 'เตือนกิจกรรมท่องเที่ยว',
+      name: 'แจ้งเตือนการเดินทาง',
       importance: Notifications.AndroidImportance.HIGH,
     });
   const permission = await Notifications.requestPermissionsAsync();
-  if (!permission.granted)
-    throw new Error('ยังไม่ได้รับอนุญาตแจ้งเตือน เปิดสิทธิ์ได้จากการตั้งค่าเครื่อง');
-  const date = new Date(new Date(event.startsAt).getTime() - 30 * 60000);
-  if (!test && date.getTime() <= Date.now())
-    throw new Error('เลยเวลาเตือนแล้ว กรุณาเลือกกิจกรรมที่เริ่มในอีกมากกว่า 30 นาที');
-  const id = `event-${event.id}${test ? '-test' : ''}`;
-  await Notifications.cancelScheduledNotificationAsync(id);
+  if (!permission.granted) throw new Error('กรุณาอนุญาตการแจ้งเตือนในการตั้งค่าเครื่อง');
+  await cancelReminder(trip.id);
+  try {
+    for (const stop of upcoming)
+      await Notifications.scheduleNotificationAsync({
+        identifier: `trip-${trip.id}-stop-${stop.placeId}`,
+        content: {
+          title: `ถึงเวลาเที่ยว ${titles[stop.placeId] || 'สถานที่ในทริป'}`,
+          body: trip.title,
+          data: { tripId: trip.id, placeId: stop.placeId },
+          sound: true,
+        },
+        trigger: {
+          type: Notifications.SchedulableTriggerInputTypes.DATE,
+          date: new Date(stop.startsAt),
+          channelId: CHANNEL,
+        },
+      });
+  } catch (error) {
+    await cancelReminder(trip.id);
+    throw error;
+  }
+}
+
+export async function scheduleTestNotification(trip: Trip) {
+  if (Platform.OS === 'android')
+    await Notifications.setNotificationChannelAsync(CHANNEL, {
+      name: 'แจ้งเตือนการเดินทาง',
+      importance: Notifications.AndroidImportance.HIGH,
+    });
+  const permission = await Notifications.requestPermissionsAsync();
+  if (!permission.granted) throw new Error('กรุณาอนุญาตการแจ้งเตือนในการตั้งค่าเครื่อง');
+  const identifier = `trip-${trip.id}-test`;
+  await Notifications.cancelScheduledNotificationAsync(identifier);
   await Notifications.scheduleNotificationAsync({
-    identifier: id,
+    identifier,
     content: {
-      title: test ? 'ทดสอบการแจ้งเตือน' : 'อีก 30 นาที กิจกรรมจะเริ่มแล้ว',
-      body: 'แตะเพื่อเปิดรายละเอียดกิจกรรมของคุณ',
-      data: { eventId: event.id },
+      title: 'ทดสอบการแจ้งเตือนสำเร็จ 🌿',
+      body: trip.title + ' · แตะเพื่อเปิดแผนการเดินทาง',
+      data: { tripId: trip.id },
       sound: true,
     },
-    trigger: test
-      ? {
-          type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
-          seconds: 10,
-          channelId: CHANNEL,
-        }
-      : { type: Notifications.SchedulableTriggerInputTypes.DATE, date, channelId: CHANNEL },
+    trigger: {
+      type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+      seconds: 10,
+      repeats: false,
+      channelId: CHANNEL,
+    },
   });
-  return id;
-}
-export async function hasReminder(eventId: string) {
-  const scheduled = await Notifications.getAllScheduledNotificationsAsync();
-  return scheduled.some((item) => item.identifier === `event-${eventId}`);
-}
-export async function cancelReminder(eventId: string) {
-  await Notifications.cancelScheduledNotificationAsync(`event-${eventId}`);
 }

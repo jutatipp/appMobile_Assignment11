@@ -1,14 +1,14 @@
 import { StyleSheet } from 'react-native';
 
 export const colors = {
-  primary: '#185C4B',
-  dark: '#153E35',
-  accent: '#DCE8C8',
-  background: '#F7F8F2',
+  primary: '#20251E',
+  dark: '#141812',
+  accent: '#DDF876',
+  background: '#F5F6F2',
   white: '#FFFFFF',
-  text: '#20372E',
-  muted: '#718078',
-  border: '#E3E8DE',
+  text: '#20251E',
+  muted: '#747970',
+  border: '#E7E9E2',
   danger: '#AD3932',
   warm: '#F4E9D5',
 };
@@ -33,7 +33,7 @@ export const ui = StyleSheet.create({
     backgroundColor: colors.white,
     borderWidth: 1,
     borderColor: colors.border,
-    borderRadius: 14,
+    borderRadius: 20,
     paddingHorizontal: 16,
     paddingVertical: 12,
     fontSize: 16,
@@ -51,7 +51,7 @@ export const ui = StyleSheet.create({
   error: { color: colors.danger, fontSize: 13, lineHeight: 20 },
   badge: {
     color: colors.primary,
-    backgroundColor: '#EAF1E2',
+    backgroundColor: '#EDF4D9',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 10,

@@ -1,9 +1,10 @@
+import app from './app.json';
 import { ExpoConfig, ConfigContext } from 'expo/config';
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: 'Nong Khai Explore',
-  slug: 'appLocation_Maps',
+  name: app.expo.name,
+  slug: app.expo.slug,
   plugins: [
     ...(config.plugins ?? []),
     [
